@@ -1,14 +1,13 @@
-import { Schema, model, type Document } from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
 import bcrypt from "bcrypt";
-import { type IClub, clubSchema } from "/Club.js";
 
 interface IUser extends Document {
     username: string; 
     name: string; 
     email: string;
     password: string;
-    bag: IClub[];
-    scores: [number];
+    bag: Schema.Types.ObjectId[];
+    scores: Schema.Types.ObjectId[];
     isCorrectPassword(password: string): Promise<boolean>
     bestScore: number;
 }
@@ -32,8 +31,18 @@ const userSchema = new Schema<IUser>(
           type: String,
           required: true,
         },
-        bag: [clubSchema],
-        scores: [Number]
+        bag: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Club"
+            }
+        ],
+        scores: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Score"
+            }
+        ],
     },
 
     {
