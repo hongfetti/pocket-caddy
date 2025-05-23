@@ -2,6 +2,7 @@ import { Schema, model, Types, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
 interface IUser extends Document {
+    _id: Types.ObjectId;
     username: string; 
     name: string; 
     email: string;
@@ -9,7 +10,7 @@ interface IUser extends Document {
     bag: Schema.Types.ObjectId[];
     scores: Schema.Types.ObjectId[];
     isCorrectPassword(password: string): Promise<boolean>
-    bestScore: number;
+    getBestScore(): Promise<number | null>
 }
 
 const userSchema = new Schema<IUser>(
@@ -67,9 +68,16 @@ userSchema.methods.isCorrectPassword = async function (password: string): Promis
     return await bcrypt.compare(password, this.password);
   };
 
-userSchema.virtual("bestScore").get(function (this: IUser) {
-    return Math.min(...this.scores)
-})
+userSchema.methods.getBestScore = async function (): Promise<number | null> {
+    await this.populate('scores');
+
+    const scoreValues = this.scores.map((score: any) => score.value)
+    if (scoreValues.length === 0) 
+      return null
+
+    return Math.min(...this.scoreValues)
+};
+
 
 const User = model<IUser>("User", userSchema);
 
