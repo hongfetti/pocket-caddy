@@ -6,3 +6,12 @@ interface UserDocument {
     email: string;
     password: string;
 }
+
+interface UserContext {
+    user: {
+        _id: string;
+        username: string;
+        email: string;
+        password: string;
+    }
+}
