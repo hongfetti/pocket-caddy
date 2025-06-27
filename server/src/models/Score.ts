@@ -4,7 +4,6 @@ interface IScore extends Document {
     _id: Types.ObjectId;
     courseName: string;
     par: number;
-    date: Date;
     totalScore: number
 };
 
@@ -16,10 +15,6 @@ const scoreSchema = new Schema<IScore>(
         },
         par: {
             type: Number,
-            required: true,
-        },
-        date: {
-            type: Date,
             required: true,
         },
         totalScore: {

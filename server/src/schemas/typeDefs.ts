@@ -14,45 +14,44 @@ const typeDefs = gql`
     type Score {
         _id: ID!
         courseName: String!
-        par: Number!
-        date: Date!
-        totalScore: Number!
+        par: Int!
+        totalScore: Int!
     } 
 
     type Club {
         _id: ID!
         clubType: ClubType!
-        distance: Number!
+        distance: Int!
     }
 
     enum ClubType {
         Driver
-        3_WOOD
-        5_WOOD
-        7_WOOD
-        3_HYBRID
-        4_HYBRID
-        5_HYBRID
-        6_HYBRID
-        7_HYBRID
-        2_IRON
-        3_IRON
-        4_IRON
-        5_IRON
-        6_IRON
-        7_IRON
-        8_IRON
-        9_IRON
-        PITCHING_WEDGE
-        64
-        62
-        60
-        58
-        56
-        54
-        52
-        50
-        48
+        THREE_WOOD
+        FIVE_WOOD
+        SEVEN_WOOD
+        THREE_HYBRID
+        FOUR_HYBRID
+        FIVE_HYBRID
+        SIX_HYBRID
+        SEVEN_HYBRID
+        TWO_IRON
+        THREE_IRON
+        FOUR_IRON
+        FIVE_IRON
+        SIX_IRON
+        SEVEN_IRON
+        EIGHT_IRON
+        NINE_IRON
+        PITCHINGWEDGE
+        SIXTYFOUR
+        SIXTYTWO
+        SIXTY
+        FIFTYEIGHT
+        FIFTYSIX
+        FIFTYFOUR
+        FIFTYTWO
+        FIFTY
+        FORTYEIGHT
         PUTTER
     }
 
@@ -61,8 +60,8 @@ const typeDefs = gql`
         name: String!
         email: String!
         password: String!
-        bag: [Club]
-        scores: [Score]
+        bag: [ID!]
+        scores: [ID!]
     }
 
     input UpdateUserInput {
@@ -70,8 +69,8 @@ const typeDefs = gql`
         name: String
         email: String
         password: String
-        bag: [Club]
-        scores: [Score]
+        bag: [ID!]
+        scores: [ID!]
     }
 
     input DeleteUserInput {
@@ -81,12 +80,12 @@ const typeDefs = gql`
     input ClubInput {
         id: ID!
         clubType: ClubType!
-        distance: Number
+        distance: Int
     }
 
     input UpdateClubInput {
         clubType: ClubType
-        distance: Number
+        distance: Int
     }
 
     input DeleteClubInput {
@@ -96,16 +95,14 @@ const typeDefs = gql`
     input ScoreInput {
         id: ID!
         courseName: String!
-        par: Number!
-        date: Date!
-        totalScore: Number!
+        par: Int!
+        totalScore: Int!
     }
 
     input UpdateScoreInput {
         courseName: String
-        par: Number
-        date: Date
-        totalScore: Number
+        par: Int
+        totalScore: Int
     }
 
     input DeleteScoreInput {

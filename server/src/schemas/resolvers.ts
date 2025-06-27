@@ -70,7 +70,6 @@ interface AddScoreArgs {
     input: {
         courseName: string;
         par: number;
-        date: Date;
         totalScore: number;
     }
 }
@@ -80,7 +79,6 @@ interface UpdateScoreArgs {
         id: string;
         courseName?: string;
         par?: number;
-        date?: Date;
         totalScore?: number;
     }
 }
@@ -337,7 +335,6 @@ const resolvers = {
             const score = await Score.create({
                 courseName: input.courseName,
                 par: input.par,
-                date: input.date,
                 totalScore: input.totalScore,
             });
 
