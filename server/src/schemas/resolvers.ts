@@ -42,10 +42,8 @@ interface DeleteUserArgs {
 }
 
 interface LoginUserArgs {
-    input: {
-        username: string;
-        password: string;
-    }
+    email: string;
+    password: string;
 }
 
 interface AddClubArgs {
@@ -124,12 +122,124 @@ const resolvers = {
                 return user ? user.scores : [];
             }
             throw new AuthenticationError("Could not authenticate user.")
+        },
+
+        //Query to get a specific club to update distance/remove from bag
+        club: async (_parent: any, { id }: { id: string }) => {
+            const item = await Club.findById(id);
+
+            if (!item) {
+                throw new Error("Club not found");
+            }
+
+            return item;
+        },
+
+        //Query to get a specific round score to update/delete
+        score: async (_parent: any, { id }: { id: string }) => {
+            const item = await Score.findById(id);
+
+            if (!item) {
+                throw new Error("Club not found");
+            }
+
+            return item;
         }
     },
 
     Mutation: {
+        addUser: async (_parent: any, { input }: AddUserArgs) => {
+            // Check to see if user being created already exists
+            const existingUser = await User.findOne({
+                $or: [{ username: input.username }, { email: input.email }],
+            });
 
-    },
+            if (existingUser) {
+                throw new AuthenticationError("Username or email already exists");
+            }
+
+            // Create a new user with the provided username, email, and password
+            const user = await User.create({ ...input });
+
+            // Sign a token with the user's information
+            const token = signToken(user.username, user.email, user._id);
+
+            // Return the token and the user
+            return { token, user };
+        },
+
+        updateUser: async (_parent: any, { input }: UpdateUserArgs, context: any) => {
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to update your profile.");
+            }
+
+            if (context.user._id.toString() !== input.id) {
+                throw new AuthenticationError("You can only update your own profile.");
+            }
+
+            const user = await User.findById(input.id);
+            if (!user) {
+                throw new Error("User not found.");
+            }
+
+            // Only update the password if it's provided, triggering the pre-save hook
+            if (input.password) {
+                user.password = input.password;  // The pre-save hook will hash it automatically
+            }
+
+            // Update other fields
+            Object.assign(user, input);
+
+            // Save the updated user
+            await user.save();
+
+            return user;
+        },
+
+        deleteUser: async (_parent: any, { input }: DeleteUserArgs, context: any) => {
+            if (!context.user || context.user._id.toString() !== input.id) {
+                throw new AuthenticationError("You can only delete your own account.");
+            }
+
+            const user = await User.findById(input.id);
+            if (!user) {
+                throw new Error("User not found.");
+            }
+
+            // Delete associated clubs and scores
+            await Club.deleteMany({ _id: { $in: user.bag } });
+            await Score.deleteMany({ _id: { $in: user.scores } });
+
+            // Delete the user
+            await User.findByIdAndDelete(input.id);
+
+            return { message: "User successfully deleted." };
+        },
+
+        login: async (_parent: any, { email, password }: LoginUserArgs) => {
+            // Find a user with the provided email
+            const user = await User.findOne({ email });
+
+            // If no user is found, throw an AuthenticationError
+            if (!user) {
+                throw new AuthenticationError("Could not authenticate user.");
+            }
+
+            // Check if the provided password is correct
+            const correctPw = await user.isCorrectPassword(password);
+
+            // If the password is incorrect, throw an AuthenticationError
+            if (!correctPw) {
+                throw new AuthenticationError("Could not authenticate user.");
+            }
+
+            // Sign a token with the user's information
+            const token = signToken(user.username, user.email, user._id);
+
+            // Return the token and the user
+            return { token, user };
+            },
+        },
 };
 
 export default resolvers;
