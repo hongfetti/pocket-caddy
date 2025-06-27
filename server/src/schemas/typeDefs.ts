@@ -25,7 +25,7 @@ const typeDefs = gql`
     }
 
     enum ClubType {
-        Driver
+        DRIVER
         THREE_WOOD
         FIVE_WOOD
         SEVEN_WOOD

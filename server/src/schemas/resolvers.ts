@@ -138,7 +138,7 @@ const resolvers = {
             const item = await Score.findById(id);
 
             if (!item) {
-                throw new Error("Club not found");
+                throw new Error("Score not found");
             }
 
             return item;
@@ -257,7 +257,7 @@ const resolvers = {
 
             // create club
             const club = await Club.create({
-                clutType: input.clubType,
+                clubType: input.clubType,
                 distance: input.distance,
             });
 
