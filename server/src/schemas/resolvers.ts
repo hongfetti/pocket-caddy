@@ -168,7 +168,11 @@ const resolvers = {
             return { token, user };
         },
 
-        updateUser: async (_parent: any, { input }: UpdateUserArgs, context: any) => {
+        updateUser: async (
+            _parent: any, 
+            { input }: UpdateUserArgs, 
+            context: any
+        ) => {
             if (!context.user) {
                 throw new AuthenticationError("You must be logged in to update your profile.");
             }
@@ -196,7 +200,11 @@ const resolvers = {
             return user;
         },
 
-        deleteUser: async (_parent: any, { input }: DeleteUserArgs, context: any) => {
+        deleteUser: async (
+            _parent: any, 
+            { input }: DeleteUserArgs, 
+            context: any
+        ) => {
             if (!context.user || context.user._id.toString() !== input.id) {
                 throw new AuthenticationError("You can only delete your own account.");
             }
@@ -238,7 +246,155 @@ const resolvers = {
 
             // Return the token and the user
             return { token, user };
-            },
+        },
+
+        addClub: async (
+            _parent: any, 
+            { input }: AddClubArgs, 
+            context: any
+        ) => {
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to add a new club")
+            }
+
+            // create club
+            const club = await Club.create({
+                clutType: input.clubType,
+                distance: input.distance,
+            });
+
+            await User.findByIdAndUpdate(
+                context.user._id,
+                { $push: { bag: club._id } },
+                { new: true }
+            );
+
+            return club
+        },
+
+        updateClub: async (
+            _parent: any, 
+            { input }: UpdateClubArgs, 
+            context: any
+        ) => {
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to update a club")
+            }
+
+            // Find Club
+            const club = await Club.findById(input.id);
+            if (!club) {
+                throw new Error("Club not found")
+            }
+
+            // Update Club
+            const updatedClub = await Club.findByIdAndUpdate(
+                input.id,
+                { $set: input },
+                { new: true, runValidators: true }
+            );
+
+            return updatedClub;
+        },
+
+        deleteClub: async (
+            _parent: any, 
+            { input }: DeleteClubArgs, 
+            context: any
+        ) => {
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to delete a club")
+            }
+
+            // Find the club
+            const club = await Club.findById(input.id);
+            if (!club) {
+                throw new Error("Club not found")
+            }
+
+            await User.findByIdAndUpdate(
+                context.user._id,
+                { $pull: { club: input.id } },
+                { new: true }
+            );
+
+            // delete club 
+            const deletedItem = await Club.findByIdAndDelete(input.id);
+
+            return deletedItem;
+        },
+
+        addScore: async (
+            _parent: any, 
+            { input }: AddScoreArgs, 
+            context: any
+        ) => {
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to add a score")
+            }
+
+            // create new round score
+            const score = await Score.create({
+                courseName: input.courseName,
+                par: input.par,
+                date: input.date,
+                totalScore: input.totalScore,
+            });
+
+            await User.findByIdAndUpdate(
+                context.user._id,
+                { $push: { score: score._id }},
+                { new: true }
+            );
+
+            return score
+        },
+
+        updateScore: async (
+            _parent: any, 
+            { input }: UpdateScoreArgs, 
+            context: any
+        ) => {
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to update a score")
+            }
+
+            // Find Score 
+            const score = await Score.findById(input.id);
+            if (!score) {
+                throw new Error("Round not found")
+            }
+
+            // Update Score
+            const updatedScore = await Score.findByIdAndUpdate(
+                input.id,
+                { $set: input },
+                { new: true, runValidators: true }
+            );
+
+            return updatedScore;
+        },
+
+        deleteScore: async (
+            _parent: any, 
+            { input }: DeleteScoreArgs, 
+            context: any
+        ) => {
+            if (!context.user) {
+                throw new AuthenticationError("You must be logged in to delete a score")
+            }
+
+            // Find Round
+            const score = await Score.findById(input.id);
+            if (!score) {
+                throw new Error("Round not found")
+            }
+
+            // delete score 
+            const deletedScore = await Score.findByIdAndDelete(input.id);
+
+            return deletedScore;
+        },
         },
 };
 
