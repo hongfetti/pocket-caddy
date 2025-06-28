@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../../utils/mutations.ts";
 
+import "./Sign-up.css"
+
 import Auth from "../../utils/auth.ts"
 
 const SignUp = () => {
@@ -43,8 +45,24 @@ const SignUp = () => {
       <div className="card-body d-flex justify-content-center align-items-center">
         <div className="d-flex flex-column align-items-center col-12">
           <form className="col-12 d-flex flex-column" onSubmit={handleFormSubmit}>
+            <input 
+              className="signup-form"
+              placeholder="Username"
+              name="username"
+              type="string"
+              value={formState.username}
+              onChange={handleChange}
+            />
+            <input 
+              className="signup-form"
+              placeholder="Name"
+              name="name"
+              type="string"
+              value={formState.name}
+              onChange={handleChange}
+            />
             <input
-              className="form-input"
+              className="signup-form"
               placeholder="Email"
               name="email"
               type="email"
@@ -52,7 +70,7 @@ const SignUp = () => {
               onChange={handleChange}
             />
             <input
-              className="form-input"
+              className="signup-form"
               placeholder="Password"
               name="password"
               type="password"

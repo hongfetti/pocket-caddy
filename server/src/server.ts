@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'
 import path from 'node:path';
 import type { Request, Response } from 'express';
 // Import the ApolloServer class
@@ -27,6 +28,10 @@ const startApolloServer = async () => {
   await server.start();
   await db;
 
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }))
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
