@@ -5,6 +5,7 @@
     "main": "server/server.js",
     "scripts": {
         "start-server": "cd server && npm run start",
+        "start-client": "cd client && npm run dev",
         "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
         "install": "cd server && npm i && cd ../client && npm i",
         "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",

@@ -1,0 +1,26 @@
+#login-submit-btn {
+    cursor: "pointer";
+    background-color: "#7669EA";
+    color: "white";
+    max-width: 50%;
+    align-self: center;
+}
+
+#login-card {
+    border-radius: 50%;
+    height: 300px;
+    width: 300px;
+    justify-content: center;
+    background-color: white;
+}
+
+.form-input {
+    margin: 1rem;
+}
+
+@media screen and (min-width: 450px) {
+    #login-card {
+        height: 450px;
+        width: 450px;
+    }
+}
