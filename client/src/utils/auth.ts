@@ -4,6 +4,7 @@ import { type JwtPayload, jwtDecode } from 'jwt-decode';
 interface ExtendedJwt extends JwtPayload {
   data:{
     username:string,
+    name:string,
     email:string,
     id:string
   }
@@ -12,9 +13,16 @@ interface ExtendedJwt extends JwtPayload {
 class AuthService {
   // This method decodes the JWT token to get the user's profile information.
   getProfile() {
-    // jwtDecode is used to decode the JWT token and return its payload.
-    return jwtDecode<ExtendedJwt>(this.getToken());
+  const token = this.getToken();
+  if (!token) return null;
+
+  try {
+    return jwtDecode<ExtendedJwt>(token);
+  } catch (error) {
+    console.error("Invalid token in getProfile:", error);
+    return null;
   }
+}
 
   // This method checks if the user is logged in by verifying the presence and validity of the token.
   loggedIn() {
@@ -55,7 +63,10 @@ class AuthService {
   // This method logs out the user by removing the token from localStorage and redirecting to the home page.
   logout() {
     localStorage.removeItem('id_token');
-    window.location.assign('/');
+
+    setTimeout(() => {
+      window.location.assign('/');
+    }, 100)
   }
 }
 

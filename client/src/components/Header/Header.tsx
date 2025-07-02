@@ -1,5 +1,4 @@
-// import Nav from './Navigation.jsx'
-// import './Header.css'
+import './Header.css'
 import { Link } from "react-router-dom";
 import auth from "../../utils/auth";
 
@@ -7,7 +6,7 @@ export default function Header() {
     return (
         <header>
             <h1>Pocket Caddy</h1>
-            <div>
+            <div className="nav-bar">
                 {auth.loggedIn() ? (
                     <ul>
                         <li>

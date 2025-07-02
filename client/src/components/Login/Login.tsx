@@ -29,7 +29,14 @@ const Login = () => {
         variables: { ...formState },
       });
 
-      Auth.login(data.login.token);
+      console.log("GraphQL response:", data);
+
+      if (data?.login?.token) {
+        console.log("Token to save:", data.login.token);
+        Auth.login(data.login.token);
+      } else {
+        console.error("No token found")
+      }
     } catch (e) {
       console.error(e);
     }

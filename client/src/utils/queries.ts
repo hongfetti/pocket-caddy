@@ -7,7 +7,6 @@ export const GET_CURRENT_USER = gql`
       username
       name
       email
-      password
       bag {
         _id
         clubType
