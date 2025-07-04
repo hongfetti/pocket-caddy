@@ -78,7 +78,6 @@ const typeDefs = gql`
     }
 
     input ClubInput {
-        id: ID!
         clubType: ClubType!
         distance: Int
     }
@@ -93,7 +92,6 @@ const typeDefs = gql`
     }
 
     input ScoreInput {
-        id: ID!
         courseName: String!
         par: Int!
         totalScore: Int!

@@ -1,6 +1,8 @@
 import "./Profile.css";
+import AddClub from "../Add/Add-Club.tsx";
 
-import { Link } from "react-router-dom"
+import {  useState } from "react";
+// import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_CURRENT_USER } from "../../utils/queries.ts";
 
@@ -12,6 +14,7 @@ type Score = {
 }
 
 const Profile = () => {
+  const [showAddModal, setShowAddModal] = useState(false)
   const { loading, error, data } = useQuery(GET_CURRENT_USER);
 
   if (loading) return <p>Loading...</p>;
@@ -33,24 +36,22 @@ const Profile = () => {
 
   return (
     <main>
+      
       <h2>Welcome, {currentUser.name}</h2>
+      
       <div className="card" id="main-card">
         <div id="btn-container">
-          <button id="add-club-btn">
-            <Link
-            className="nav-link" 
-            to="/add-club">
-              Add Club
-            </Link>
+          <button 
+            id="add-club-btn"
+            onClick={() => setShowAddModal(true)}
+          >
+            Add Club
           </button>
-          <button id="add-score-btn">
-            <Link
-            className="nav-link" 
-            to="/add-score">
-              Add Score
-            </Link>
-          </button>
+          
         </div>
+        {showAddModal && (
+            <AddClub onClose={() => setShowAddModal(false)}/>
+          )}
         {bestScore ? (
           <div id="best-score">
             <p><strong>Best Score:</strong> {bestScore.totalScore}</p>
