@@ -8,7 +8,7 @@ import Home from "./pages/Home/Home.tsx"
 import Signup from "./components/Sign-up/Sign-up.tsx";
 import Login from "./components/Login/Login.tsx";
 import ErrorPage from "./pages/Error.tsx";
-// import Add from "./pages/add/AddItem";
+import AddClub from "./pages/Add/Add-Club.tsx";
 // import Bag from "./pages/Bag"
 // import Scores from "./pages/Scores"
 
@@ -30,10 +30,10 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
-      // {
-      //   path: "/add",
-      //   element: <Add />,
-      // },
+      {
+        path: "/add-club",
+        element: <AddClub />,
+      },
       // {
       //   path: "/bag",
       //   element: <Bag />,

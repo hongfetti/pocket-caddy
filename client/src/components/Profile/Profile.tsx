@@ -1,5 +1,6 @@
 import "./Profile.css";
 
+import { Link } from "react-router-dom"
 import { useQuery } from "@apollo/client";
 import { GET_CURRENT_USER } from "../../utils/queries.ts";
 
@@ -34,14 +35,30 @@ const Profile = () => {
     <main>
       <h2>Welcome, {currentUser.name}</h2>
       <div className="card" id="main-card">
-        {bestScore? (
-          <div>
-        <p><strong>Best Score:</strong> {bestScore.totalScore}</p>
-        <p><strong>Course:</strong> {bestScore.courseName}</p>
-        <p><strong>Score vs Par:</strong> {bestScore.totalScore - bestScore.par > 0
-          ? `+${bestScore.totalScore - bestScore.par}`
-          : bestScore.totalScore - bestScore.par}</p>
-      </div>
+        <div id="btn-container">
+          <button id="add-club-btn">
+            <Link
+            className="nav-link" 
+            to="/add-club">
+              Add Club
+            </Link>
+          </button>
+          <button id="add-score-btn">
+            <Link
+            className="nav-link" 
+            to="/add-score">
+              Add Score
+            </Link>
+          </button>
+        </div>
+        {bestScore ? (
+          <div id="best-score">
+            <p><strong>Best Score:</strong> {bestScore.totalScore}</p>
+            <p><strong>Course:</strong> {bestScore.courseName}</p>
+            <p><strong>Score vs Par:</strong> {bestScore.totalScore - bestScore.par > 0
+              ? `+${bestScore.totalScore - bestScore.par}`
+              : bestScore.totalScore - bestScore.par}</p>
+          </div>
         ) : (
           <p>No scores yet</p>
         )}

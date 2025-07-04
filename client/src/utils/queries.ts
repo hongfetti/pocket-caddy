@@ -41,3 +41,25 @@ export const GET_CLUB_BY_ID = gql`
     }
   }
 `;
+
+export const GET_SCORE = gql `
+  query GetScores {
+    score {
+      _id
+      courseName
+      par
+      totalScore
+    }
+  }
+`
+
+export const GET_SCORE_BY_ID = gql `
+  query GetScoreById($scoreId: ID!) {
+    score (id: $scoreId) {
+      _id
+      courseName
+      par
+      totalScore
+    }
+  }
+`
