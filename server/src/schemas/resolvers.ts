@@ -340,7 +340,7 @@ const resolvers = {
 
             await User.findByIdAndUpdate(
                 context.user._id,
-                { $push: { score: score._id }},
+                { $push: { scores: score._id }},
                 { new: true }
             );
 

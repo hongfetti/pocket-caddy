@@ -1,3 +1,4 @@
+import "./modal.css"
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { ADD_CLUB } from "../../utils/mutations";
@@ -5,7 +6,7 @@ import { ADD_CLUB } from "../../utils/mutations";
 type DropdownKey = "clubType";
 type AddClubProps = {
   onClose: () => void;
-}
+};
 
 const clubOptions = [
   { label: "Driver", value: "DRIVER" },
@@ -84,53 +85,53 @@ const AddClub = ({ onClose }: AddClubProps) => {
   return (
     <main className="modal-overlay">
       <div className="modal-content">
-      
-      <h1>Add A Club To Your Bag</h1>
-      <form>
-        <div className="dropdown btn-group w-50 text-center">
+        <h1>Add A Club To Your Bag</h1>
+        <form>
+          <div className="dropdown btn-group w-50 text-center">
+            <button
+              className="btn dropdown-toggle w-100 py-2"
+              type="button"
+              onClick={() => toggleDropdown("clubType")}
+              aria-expanded={openDropdown === "clubType"}
+            >
+              {clubOptions.find(
+                (option) => option.value === selectedItems.clubType
+              )?.label || "Club Type"}
+            </button>
+            {openDropdown === "clubType" && (
+              <ul className="dropdown-menu show w-100 text-center">
+                {clubOptions.map(({ label, value }) => (
+                  <li
+                    key={value}
+                    className="dropdown-item"
+                    onClick={() => handleSelect("clubType", value)}
+                  >
+                    {label}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <input
+            className="add-club-form"
+            placeholder="Add distance"
+            name="Distance"
+            type="number"
+            value={formState.distance}
+            onChange={(e) =>
+              setFormState({ ...formState, distance: e.target.value })
+            }
+          />
           <button
-            className="btn dropdown-toggle w-100 py-2"
             type="button"
-            onClick={() => toggleDropdown("clubType")}
-            aria-expanded={openDropdown === "clubType"}
+            className="btn uniform-button"
+            onClick={handleSubmit}
+            disabled={loading || !!error}
           >
-            {clubOptions.find(option => option.value === selectedItems.clubType)?.label ||
-              "Club Type"}
+            {loading ? "Adding..." : "Add to Bag"}
           </button>
-          {openDropdown === "clubType" && (
-            <ul className="dropdown-menu show w-100 text-center">
-              {clubOptions.map(({ label, value }) => (
-                <li
-                  key={value}
-                  className="dropdown-item"
-                  onClick={() => handleSelect("clubType", value)}
-                >
-                  {label}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <input
-          className="add-club-form"
-          placeholder="Add distance"
-          name="Distance"
-          type="number"
-          value={formState.distance}
-          onChange={(e) =>
-            setFormState({ ...formState, distance: e.target.value })
-          }
-        />
-        <button
-          type="button"
-          className="btn uniform-button"
-          onClick={handleSubmit}
-          disabled={loading || !!error}
-        >
-          {loading ? "Adding..." : "Add to Bag"}
-        </button>
-        <button onClick={onClose}>Close</button>
-      </form>
+          <button onClick={onClose}>Close</button>
+        </form>
       </div>
     </main>
   );

@@ -1,5 +1,6 @@
 import "./Profile.css";
 import AddClub from "../Add/Add-Club.tsx";
+import AddScore from "../Add/Add-Score.tsx"
 
 import {  useState } from "react";
 // import { Link } from "react-router-dom";
@@ -14,7 +15,8 @@ type Score = {
 }
 
 const Profile = () => {
-  const [showAddModal, setShowAddModal] = useState(false)
+  const [showAddClubModal, setShowAddClubModal] = useState(false)
+  const [showAddScoreModal, setShowAddScoreModal] = useState(false)
   const { loading, error, data } = useQuery(GET_CURRENT_USER);
 
   if (loading) return <p>Loading...</p>;
@@ -43,15 +45,27 @@ const Profile = () => {
         <div id="btn-container">
           <button 
             id="add-club-btn"
-            onClick={() => setShowAddModal(true)}
+            onClick={() => setShowAddClubModal(true)}
           >
             Add Club
           </button>
+
+          <button 
+            id="add-score-btn"
+            onClick={() => setShowAddScoreModal(true)}
+          >
+            Add Score
+          </button>
           
         </div>
-        {showAddModal && (
-            <AddClub onClose={() => setShowAddModal(false)}/>
+
+        {showAddClubModal && (
+            <AddClub onClose={() => setShowAddClubModal(false)}/>
           )}
+        {showAddScoreModal && (
+            <AddScore onClose={() => setShowAddScoreModal(false)}/>
+          )}
+          
         {bestScore ? (
           <div id="best-score">
             <p><strong>Best Score:</strong> {bestScore.totalScore}</p>
