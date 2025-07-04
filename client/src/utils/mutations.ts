@@ -48,3 +48,66 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+export const ADD_CLUB = gql `
+  mutation addClub($input: ClubInput!) {
+    addClub(input: $input) {
+      _id
+      clubType
+      distance
+    }
+  }
+`
+
+export const UPDATE_CLUB = gql `
+  mutation updateClub($input: UpdateClubInput!) {
+    updateClub(input: $input) {
+      _id
+      clubType
+      distance
+    }
+  }
+`
+
+export const DELETE_CLUB = gql `
+  mutation deleteClub($input: DeleteClubInput!) {
+    deleteClub(input: $input) {
+      _id
+      clubType
+      distance
+    }
+  }
+`
+
+export const ADD_SCORE = gql `
+  mutation addScore($input: ScoreInput!) {
+    addScore(input: $input) {
+      _id
+      courseName
+      par
+      totalScore
+    }
+  }
+`
+
+export const UPDATE_SCORE = gql `
+  mutation updateScore($input: UpdateScoreInput!) {
+    updateScore(input: $input) {
+      _id
+      courseName
+      par
+      totalScore
+    }
+  }
+`
+
+export const DELETE_SCORE = gql `
+  mutation deleteScore($input: DeleteScoreInput!) {
+    deleteScore(input: $input) {
+      _id
+      courseName
+      par
+      totalScore
+    }
+  }
+`
