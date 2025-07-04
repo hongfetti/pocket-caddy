@@ -9,6 +9,14 @@ export default function Header() {
             <div className="nav-bar">
                 {auth.loggedIn() ? (
                     <ul>
+                      <li>
+                            <Link
+                              className="nav-link"
+                              to="/"
+                              >
+                                Home
+                              </Link>
+                        </li>
                         <li>
                             <Link
                               className="nav-link"
